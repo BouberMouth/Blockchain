@@ -134,26 +134,26 @@ struct ContentView: View {
     }
     
     func transaction(from sender: String, to receiver: String, amount: Int, type: String) {
+        
         if accounts[sender] == nil {
-            alertMessage = ""
+            alertMessage = "Wrong sender account"
             showAlert.toggle()
         } else if accounts[sender]! - amount < 0 {
-            alertMessage = ""
+            alertMessage = "Sender (\(sender)) doesn't have \(amount) BTC"
             showAlert.toggle()
         } else {
             accounts.updateValue(accounts[sender]! - amount, forKey: sender)
-        }
-        
-        if accounts[receiver] == nil {
-            accounts.updateValue(amount, forKey: receiver)
-        } else {
-            accounts.updateValue(accounts[receiver]! + amount, forKey: receiver)
-        }
-        
-        if type == "genesis" {
-            bitcoinChain.createInitialBlock(data: "FROM: \(sender), TO: \(receiver), AMOUNT: \(amount) BTC")
-        } else if type == "normal" {
-            bitcoinChain.createBlock(data: "FROM: \(sender), TO: \(receiver), AMOUNT: \(amount) BTC")
+            if accounts[receiver] == nil {
+                accounts.updateValue(amount, forKey: receiver)
+            } else {
+                accounts.updateValue(accounts[receiver]! + amount, forKey: receiver)
+            }
+            
+            if type == "genesis" {
+                bitcoinChain.createInitialBlock(data: "FROM: \(sender), TO: \(receiver), AMOUNT: \(amount) BTC")
+            } else if type == "normal" {
+                bitcoinChain.createBlock(data: "FROM: \(sender), TO: \(receiver), AMOUNT: \(amount) BTC")
+            }
         }
     }
     
@@ -162,7 +162,7 @@ struct ContentView: View {
             print("\tBlock: \(bitcoinChain.chain[i].id!)\n\tHash: \(bitcoinChain.chain[i].hash!)\n\tPrevious Hash: \(bitcoinChain.chain[i].previousHash!)\n\tData: \(bitcoinChain.chain[i].data!)")
         }
         print(accounts)
-        print("Chain is \(chainValidity() ? "" : "not ") valid.")
+        print(chainValidity() ? "Chain is valid." : "Chain is not valid.")
     }
     
     func chainValidity() -> Bool {
