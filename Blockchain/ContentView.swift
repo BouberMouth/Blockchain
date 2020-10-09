@@ -46,7 +46,7 @@ struct ContentView: View {
                     ZStack {
                         Circle().fill(Color.red)
                             .frame(width: 70)
-                        Button("Mine") {
+                        Button("Mine BTC") {
                             mine(with: "1010")
                         }
                         .foregroundColor(.white)
@@ -98,7 +98,7 @@ struct ContentView: View {
                     ZStack {
                         Circle().fill(Color.green)
                             .frame(width: 70)
-                        Button("Mine") {
+                        Button("Mine BTC") {
                             mine(with: "1011")
                         }
                         .foregroundColor(.white)
